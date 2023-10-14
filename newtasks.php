@@ -1,12 +1,14 @@
 <?php
 include "connect.php";
-session_start();
+
 error_reporting(0); 
+
+session_start();
+
+$task_id_number = $_SESSION['tasks']['id'];
 
 $str_out_task="SELECT * FROM `tasks` WHERE `id`";
 $run_out_task=mysqli_query($connect, $str_out_task);
-
-
 
 
 if (mysqli_num_rows($run_out_task) > 0) {

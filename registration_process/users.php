@@ -32,19 +32,19 @@ session_start();
     $password = $_POST['password'];
     $conf = $_POST['conf'];
 
-    $add_user1="INSERT INTO `users` (`id`, `name`, `password`) VALUES (NULL, '$name', '$password');";
+    $add_user_sql = "INSERT INTO users (id, name, password) VALUES (NULL, '$name', '$password');";
 
-    if ($conf) {
-            if ($name && $password) {
-                $runuser=mysqli_query($connect, $add_user1);
-                header('location: reg.php');
-                $_SESSION['message'] = 'Sucsess!';
-        } 
-        else {
-            $_SESSION['message'] = 'Error';
-            header('location: reg.php');
-        }
+if ($conf) {
+    if (!empty($name) && !empty($password)) {
+        $runuser = mysqli_query($connect, $add_user_sql);
+        header('location: reg.php');
+        $_SESSION['message'] = 'Success!';
+    } else {
+        $_SESSION['message'] = 'Error';
+        header('location: reg.php');
     }
+}
+
 ?>
 
 </body>

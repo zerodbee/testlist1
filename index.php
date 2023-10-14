@@ -25,12 +25,12 @@ error_reporting(0);
     <form method="POST">
         <div class="frm_style">
             <input class="text_style" name="task" type="text" placeholder="Enter text...">
-            <input class="btn_style1" name="btn1" type="submit" value="Add task"><br>
+            <input class="btn_style1" name="task_button" type="submit" value="Add task"><br>
 
         <div class="btns">
-            <a href="delete.php"><input style="border: 2px solid; background-color: white; color: black;" name="btn2" class="btn_style" type="button" value="Remove all my tasks"></a>
-            <input style="border: 2px solid; background-color: white; color: black;" name="btn3" class="btn_style" type="submit" value="Ready all">
-            <input style="border: 2px solid; background-color: white; color: black;" name="btn4" class="btn_style" type="submit" value="Cancel all">
+            <a href="delete.php"><input style="border: 2px solid; background-color: white; color: black;" name="remove_button" class="btn_style" type="button" value="Remove all my tasks"></a>
+            <input style="border: 2px solid; background-color: white; color: black;" name="ready_button" class="btn_style" type="submit" value="Ready all">
+            <input style="border: 2px solid; background-color: white; color: black;" name="cancel_button" class="btn_style" type="submit" value="Cancel all">
 
         </div>
         </div>
@@ -51,38 +51,48 @@ error_reporting(0);
     <?php
 
     $task = $_POST['task'];
-    $btn1 = $_POST['btn1'];
+    $task_button = $_POST['task_button'];
 
-    $btn2 = $_POST['btn3'];
-    $btn3 = $_POST['btn3'];
+    $remove_button = $_POST['remove_button'];
+    $ready_button = $_POST['ready_button'];
 
-    $btn4 = $_POST['btn4'];
+    $cancel_button = $_POST['cancel_button'];
 
-    $user_idd = $_SESSION['user']['id'];
+    $user_id_number = $_SESSION['user']['id'];
 
-if (isset($_POST['btn3'])) {
 
-    $sql1 = "UPDATE `tasks` SET `color` = +1";
-    mysqli_query($connect, $sql1);
+if (isset($_POST['cancel_button'])) {
+
+$color = 0;
+
+$sql_upd = "UPDATE tasks SET color = ?";
+$stmt = $connect->prepare($sql_upd);
+
+$stmt->bind_param("i", $color);
+
+$stmt->execute();
+}
+
+if (isset($_POST['ready_button'])) {
+
+$color = 1;
+
+$sql_upd = "UPDATE tasks SET color = ?";
+$stmt = $connect->prepare($sql_upd);
+
+$stmt->bind_param("i", $color);
+
+$stmt->execute();
 
 } 
 
-if (isset($_POST['btn4'])) {
-    $sql1 = "UPDATE `tasks` SET `color` = '0'";
-    mysqli_query($connect, $sql1);
 
-
-}
-    $add_task1="INSERT INTO `tasks` (`id`, `task`, `user_id`, `color`) VALUES (NULL, '$task', '$user_idd', '0');";
-
-    if ($btn1) {
-        if ($task) {
-            $run_add_task=mysqli_query($connect, $add_task1);
-
-    } else {
-
-}
-
+if ($task_button) {
+    if ($task) {
+        $prepare = $connect->prepare("INSERT INTO tasks (id, task, user_id, color) VALUES (NULL, ?, ?, '0')");
+        $prepare->bind_param("ss", $task, $user_id_number); 
+        $prepare->execute();
+    } 
 }
 
 

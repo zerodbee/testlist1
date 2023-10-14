@@ -35,18 +35,22 @@ error_reporting(0);
 
 $regUserId = $_SESSION['user']['id']; 
 
-$sql = "SELECT * FROM `tasks` WHERE `user_id` = $regUserId";
-$result = $connect->query($sql);
-
+$sql = "SELECT * FROM tasks WHERE user_id = ?";
+$stmt = $connect->prepare($sql);
+$stmt->bind_param("i", $regUserId);
+$stmt->execute();
+$result = $stmt->get_result();
 
 if ($result->num_rows > 0) {
-
     while($row = $result->fetch_assoc()) {
         echo "<p style=text-align:center;padding:10px;>" . $row["task"]. "<hr>";
     }
 } else {
     echo "<p style=text-align:center;>0 Results</p>";
 }
+
+$stmt->close();
+$connect->close();
 ?>
 
 

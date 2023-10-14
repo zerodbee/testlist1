@@ -4,17 +4,16 @@ include "connect.php";
 
 error_reporting(0); 
 
-$user_iid = $_SESSION['user']['id'];
+$user_id_number = $_SESSION['user']['id'];
 
+$stmt = $connect->prepare("DELETE FROM tasks WHERE user_id = ?");
+$stmt->bind_param("i", $user_id_number);
 
-$sql = "DELETE FROM `tasks` WHERE  `user_id` = $user_iid";
-
-if ($connect->query($sql) === TRUE) {
+if ($stmt->execute() === TRUE) {
     echo "";
     header('location: index.php');
 } else {
-    $_SESSION['message'] = '
-    You need to log in and add your tasks';
+    $_SESSION['message'] = 'You need to log in and add your tasks';
     header('location: index.php');
 }
 ?>
