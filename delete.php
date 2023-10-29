@@ -1,8 +1,8 @@
 <?php
 session_start();
-include "connect.php"; 
+include "connect.php";
 
-error_reporting(0); 
+error_reporting(0);
 
 $user_id_number = $_SESSION['user']['id'];
 
@@ -17,4 +17,3 @@ if ($stmt->execute() === TRUE) {
     header('location: index.php');
 }
 ?>
-

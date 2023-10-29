@@ -1,7 +1,4 @@
-<?php 
-include "../connect.php"; 
-session_start();
-
+<?php
 $name = mysqli_real_escape_string($connect, $_POST['name']);
 $password = mysqli_real_escape_string($connect, $_POST['password']);
 $auth = $_POST['auth'];
@@ -27,8 +24,22 @@ if ($auth) {
 
             header('location: profile.php');
         } else {
-            $_SESSION['message'] = 'Wrong login or password';
-            header('location: reg.php');
+
+            $add_user_sql = "INSERT INTO users (id, name, password) VALUES (NULL, '$name', '$password');";
+
+            $runuser = mysqli_query($connect, $add_user_sql);
+
+
+            $user = mysqli_fetch_assoc($check_user_query);
+
+            $_SESSION['user'] = [
+                "id" => $user['id'],
+                "name" => $user['name'],
+                "password" => $user['password'],
+            ];
+
+
+            header('location: session_check.php');
         }
     } else {
         $_SESSION['message'] = 'Fields are empty';
