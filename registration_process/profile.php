@@ -27,36 +27,18 @@ error_reporting(0);
         <p style="font-size: 25px; font-weight: bold; padding: 30px;">Hello,
             <?= $_SESSION['user']['name'] ?>!
         </p>
+        <p style="font-size: 15px; padding-bottom: 30px;">Your password:
+            <?= $_SESSION['user']['password'] ?>
+        </p>
 
 
-
-        <p style="font-size: 20px;">There's all your notes:</p>
         <hr>
 
     </form>
 
-    <?php
+<?php
 
-    $regUserId = $_SESSION['user']['id'];
-
-    $sql = "SELECT * FROM tasks WHERE user_id = ?";
-    $stmt = $connect->prepare($sql);
-    $stmt->bind_param("i", $regUserId);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    if ($result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-            echo "<p style=text-align:center;padding:10px;>" . $row["task"] . "<hr>";
-        }
-    } else {
-        echo "<p style=text-align:center;>0 Results</p>";
-    }
-
-    $stmt->close();
-    $connect->close();
-    ?>
-
+?>
 
 
 </body>
